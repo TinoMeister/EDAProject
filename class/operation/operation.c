@@ -2,13 +2,14 @@
 
 
 // Add new operation
-bool addOperation(Operation* operations, int* total, int size, int idComputer, int time)
+bool addOperation(Operation* operations, int* total, int size, int idOperation, int idComputer, int time)
 {
     // Verify if the total is higher then the size of the array
     if (*total < size)
     {
         // Add the new values
         operations[*total].id = (*total + 1);
+        operations[*total].idOperation = idOperation;
         operations[*total].idComputer = idComputer;
         operations[*total].time = time;
 
@@ -22,12 +23,13 @@ bool addOperation(Operation* operations, int* total, int size, int idComputer, i
 }
 
 // Edit the operation
-bool editOperation(Operation* operations, int id, int size, int idComputer, int time) 
+bool editOperation(Operation* operations, int id, int size, int idOperation, int idComputer, int time) 
 {
     if (id < size)
     {
         int index = id - 1;
 
+        operations[index].idOperation = idOperation;
         operations[index].idComputer = idComputer;
         operations[index].time = time;
 

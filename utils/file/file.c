@@ -22,6 +22,9 @@ bool loadOpData(Operation* operations, int* total)
         operations[*total].id = (int)strtol(ptr, (char **)NULL, 10);
 
         ptr = strtok(NULL, ";");
+        operations[*total].idOperation = (int)strtol(ptr, (char **)NULL, 10);
+
+        ptr = strtok(NULL, ";");
         operations[*total].idComputer = (int)strtol(ptr, (char **)NULL, 10);
 
         ptr = strtok(NULL, ";");
@@ -49,7 +52,7 @@ bool saveOpData(Operation* operations, int total)
     for (int i = 0; i < total; i++) 
     {
         Operation op = operations[i];
-        fprintf(f, "%d;%d;%d\n", op.id, op.idComputer, op.time);
+        fprintf(f, "%d;%d;%d;%d\n", op.id, op.idOperation, op.idComputer, op.time);
     }
     
     fclose(f);
