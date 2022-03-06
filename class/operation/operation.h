@@ -9,3 +9,9 @@ typedef struct
 
 // Add new operation
 bool addOperation(Operation* operations, int* total, int size, int idComputer, int time);
+
+// Edit the operation
+bool editOperation(Operation* operations, int id, int size, int idComputer, int time);
+
+// Delete the operation
+bool deleteOperation(Operation* operations, int* total, int id, int size);

@@ -24,6 +24,32 @@ int main(int argc, char const *argv[])
 
 
     // Show operations
+    printf("After Adding:\n");
+    for (int i = 0; i < total; i++)
+    {
+        Operation op = operations[i];
+        printf("%d - %d - %d\n", op.id, op.idComputer, op.time);
+    }
+
+    editOperation(operations, 1, size, 1, 2);
+    editOperation(operations, 88, size, 1, 2);
+    editOperation(operations, 3, size, 1, 2);
+
+    // Show operations
+    printf("After Editing:\n");
+    for (int i = 0; i < total; i++)
+    {
+        Operation op = operations[i];
+        printf("%d - %d - %d\n", op.id, op.idComputer, op.time);
+    }
+
+    deleteOperation(operations, &total, 1, size);
+    deleteOperation(operations, &total, 20, size);
+    deleteOperation(operations, &total, 3, size);
+
+
+    // Show operations
+    printf("After Removing:\n");
     for (int i = 0; i < total; i++)
     {
         Operation op = operations[i];
