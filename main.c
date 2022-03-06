@@ -1,14 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "class/operation/operation.h"
+//#include "class/operation/operation.h"
+#include "utils/file/file.h"
 
 
 int main(int argc, char const *argv[]) 
 {
-    int size = 10;
+    int size = 30;
     Operation* operations = malloc(sizeof(Operation)*size);
     int total = 0;
+
+    // Load Operations from DB
+    loadOpData(operations, &total);
 
     // Add operations
     addOperation(operations, &total, size, 3, 10);
@@ -25,6 +29,10 @@ int main(int argc, char const *argv[])
         Operation op = operations[i];
         printf("%d - %d - %d\n", op.id, op.idComputer, op.time);
     }
+
+
+    // Save Operations to DB
+    saveOpData(operations, total);
 
 
     return 0;
