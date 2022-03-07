@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//#include "class/operation/operation.h"
-#include "utils/file/file.h"
+#include "utils/utils.h"
 
 
 int main(int argc, char const *argv[]) 
@@ -14,6 +13,58 @@ int main(int argc, char const *argv[])
     // Load Operations from DB
     loadOpData(operations, &total);
 
+    // Show operations
+    printf("After Loading:\n");
+    for (int i = 0; i < total; i++)
+    {
+        Operation op = operations[i];
+        printf("%d - %d - %d\n", op.id, op.idComputer, op.time);
+    }
+    printf("\n\n");
+
+    // Get Lower 
+    int n = operations[total-1].id;
+    Operation* newOperations;
+    newOperations = getShorter(operations, total, n);
+
+    // Show operations
+    printf("\nAfter getShorter:\n");
+    for (int i = 0; i < n; i++)
+    {
+        Operation op = newOperations[i];
+        printf("%d - %d - %d\n", op.id, op.idComputer, op.time);
+    }
+
+    free(newOperations);
+
+
+    // Get Higher
+    newOperations = getLonger(operations, total, n);
+
+    // Show operations
+    printf("\nAfter getLonger:\n");
+    for (int i = 0; i < n; i++)
+    {
+        Operation op = newOperations[i];
+        printf("%d - %d - %d\n", op.id, op.idComputer, op.time);
+    }
+
+    free(newOperations);
+
+
+    // Get Average
+    printf("\nAfter Average:\n");
+    for (int i = 0; i < n; i++)
+    {
+        float average = getAverage(operations, total, (i+1));
+
+        printf("Average: %d - %.2f\n", (i+1), average);
+    }
+    
+
+
+    
+    /*
     // Add Operations
     addOperation(operations, &total, size, 1, 1, 4);
     addOperation(operations, &total, size, 1, 3, 5);
@@ -32,7 +83,7 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < total; i++)
     {
         Operation op = operations[i];
-        printf("%d - %d - %d - %d\n", op.id, op.idOperation, op.idComputer, op.time);
+        printf("%d - %d - %d\n", op.id, op.idComputer, op.time);
     }
     
     // Edit Operations
@@ -41,13 +92,14 @@ int main(int argc, char const *argv[])
     editOperation(operations, 3, size, 3, 1, 2);
 
     // Show operations
-    printf("After Editing:\n");
+    printf("\nAfter Editing:\n");
     for (int i = 0; i < total; i++)
     {
         Operation op = operations[i];
-        printf("%d - %d - %d - %d\n", op.id, op.idOperation, op.idComputer, op.time);
+        printf("%d - %d - %d\n", op.id, op.idComputer, op.time);
     }
 
+    
     // Delete Operations
     deleteOperation(operations, &total, 1, size);
     deleteOperation(operations, &total, 20, size);
@@ -55,17 +107,17 @@ int main(int argc, char const *argv[])
 
 
     // Show operations
-    printf("After Removing:\n");
+    printf("\nAfter Removing:\n");
     for (int i = 0; i < total; i++)
     {
         Operation op = operations[i];
-        printf("%d - %d - %d - %d\n", op.id, op.idOperation, op.idComputer, op.time);
+        printf("%d - %d - %d\n", op.id, op.idComputer, op.time);
     }
 
-
+    
     // Save Operations to DB
     saveOpData(operations, total);
-
+    */
 
     return 0;
 }

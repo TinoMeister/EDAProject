@@ -1,15 +1,13 @@
 #include "operation.h"
 
-
 // Add new operation
-bool addOperation(Operation* operations, int* total, int size, int idOperation, int idComputer, int time)
+bool addOperation(Operation* operations, int* total, int size, int id, int idComputer, int time)
 {
     // Verify if the total is higher then the size of the array
     if (*total < size)
     {
         // Add the new values
-        operations[*total].id = (*total + 1);
-        operations[*total].idOperation = idOperation;
+        operations[*total].id = id;
         operations[*total].idComputer = idComputer;
         operations[*total].time = time;
 
@@ -23,13 +21,11 @@ bool addOperation(Operation* operations, int* total, int size, int idOperation, 
 }
 
 // Edit the operation
-bool editOperation(Operation* operations, int id, int size, int idOperation, int idComputer, int time) 
+bool editOperation(Operation* operations, int index, int size, int id, int idComputer, int time) 
 {
     if (id < size)
     {
-        int index = id - 1;
-
-        operations[index].idOperation = idOperation;
+        operations[index].id = id;
         operations[index].idComputer = idComputer;
         operations[index].time = time;
 
@@ -40,13 +36,11 @@ bool editOperation(Operation* operations, int id, int size, int idOperation, int
 }
 
 // Delete the operation
-bool deleteOperation(Operation* operations, int* total, int id, int size) 
+bool deleteOperation(Operation* operations, int* total, int index, int size) 
 {
-    if (id < size)
+    if (index < size)
     {
-        int index = id - 1;
-
-        for (int i = index-1; i < *total; i++) 
+        for (int i = index; i < *total; i++) 
         {
             if ((i+1) < *total)
                 operations[i] = operations[i+1];
