@@ -1,6 +1,7 @@
 #include "../class/operation/operation.h"
 
 // FILE
+
 // Load data of Object
 bool loadOpData(Operation* operations, int* total);
 
@@ -8,6 +9,10 @@ bool loadOpData(Operation* operations, int* total);
 bool saveOpData(Operation* operations, int total);
 
 // FUNC
+
+// Get the total of operations
+int getTotalOp(Operation* operations, int total);
+
 // Get the lower timer to complete a job and return the list for each operation
 Operation* getShorter(Operation* operations, int total, int size);
 

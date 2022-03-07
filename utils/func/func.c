@@ -3,30 +3,49 @@
 
 #include "../utils.h"
 
+// Get the total of operations
+int getTotalOp(Operation* operations, int total)
+{
+    int totalOp = 0;
+
+    for (int i = 0; i < total; i++)
+    {
+        Operation op = operations[i];
+
+        if (totalOp < op.id)
+            totalOp = op.id;
+    }
+
+    return totalOp;
+}
+
 // Get the lower timer to complete a job and return the list for each operation
 Operation* getShorter(Operation* operations, int total, int size)
 {
     Operation* newOperations = malloc(sizeof(Operation)*size);
-    int id = 1;
     int lower = 999;
 
-    for (int  i = 0; i < total; i++)
+    for (int i = 0; i < size; i++)
     {
-        Operation op = operations[i];
+        int id = (i+1);
 
-        // Verify if the idOperation change, if so the then increase plus one and reset the lower value
-        if (id != op.id)
+        for (int j = 0; j < total; j++)
         {
-            id++;
-            lower = 999;
+            Operation op = operations[j];
+
+            // Verify if the id are equals
+            if (id == op.id)
+            {
+                // Verify if the value lower is higher than of the time if so then update the list and put the value lower with the same as the operation
+                if (lower > op.time)
+                {
+                    newOperations[id - 1] = op;
+                    lower = op.time;
+                } 
+            }
         }
-        
-        // Verify if the value lower is higher than of the time if so then update the list and put the value lower with the same as the operation
-        if (lower > op.time)
-        {
-            newOperations[id - 1] = op;
-            lower = op.time;
-        } 
+
+        lower = 999;
     }
 
     return newOperations;
@@ -36,26 +55,29 @@ Operation* getShorter(Operation* operations, int total, int size)
 Operation* getLonger(Operation* operations, int total, int size)
 {
     Operation* newOperations = malloc(sizeof(Operation)*size);
-    int id = 1;
     int higher = -1;
 
-    for (int  i = 0; i < total; i++)
+    for (int i = 0; i < size; i++)
     {
-        Operation op = operations[i];
+        int id = (i+1);
 
-        // Verify if the idOperation change, if so the then increase plus one and reset the lower value
-        if (id != op.id)
+        for (int j = 0; j < total; j++)
         {
-            id++;
-            higher = -1;
+            Operation op = operations[j];
+
+            // Verify if the id are equals
+            if (id == op.id)
+            {
+                // Verify if the value higher is lower than of the time if so then update the list and put the value higher with the same as the operation
+                if (higher < op.time)
+                {
+                    newOperations[id - 1] = op;
+                    higher = op.time;
+                } 
+            }
         }
-        
-        // Verify if the value lower is higher than of the time if so then update the list and put the value lower with the same as the operation
-        if (higher < op.time)
-        {
-            newOperations[id - 1] = op;
-            higher = op.time;
-        } 
+
+        higher = -1;
     }
 
     return newOperations;

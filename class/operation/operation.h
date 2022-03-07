@@ -1,5 +1,7 @@
 #include <stdbool.h>
 
+#define TAM 30
+
 typedef struct 
 {
     int id;
