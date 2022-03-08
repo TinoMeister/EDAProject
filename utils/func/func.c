@@ -12,10 +12,12 @@ int getTotalOp(Operation* operations, int total)
     {
         Operation op = operations[i];
 
+        // Verify if the varaible totalOp is lower then the id of operations
         if (totalOp < op.id)
-            totalOp = op.id;
+            totalOp = op.id; // Update the variable
     }
 
+    // Return the id
     return totalOp;
 }
 
@@ -36,7 +38,8 @@ Operation* getShorter(Operation* operations, int total, int size)
             // Verify if the id are equals
             if (id == op.id)
             {
-                // Verify if the value lower is higher than of the time if so then update the list and put the value lower with the same as the operation
+                // Verify if the value lower is higher than of the time if so then update 
+                //the list and put the value lower with the same as the operation
                 if (lower > op.time)
                 {
                     newOperations[id - 1] = op;
@@ -45,9 +48,11 @@ Operation* getShorter(Operation* operations, int total, int size)
             }
         }
 
+        // Reset variable
         lower = 999;
     }
 
+    // Return the new variable
     return newOperations;
 }
 
@@ -56,10 +61,11 @@ Operation* getLonger(Operation* operations, int total, int size)
 {
     Operation* newOperations = malloc(sizeof(Operation)*size);
     int higher = -1;
+    int id = 0;
 
     for (int i = 0; i < size; i++)
     {
-        int id = (i+1);
+        id = (i+1);
 
         for (int j = 0; j < total; j++)
         {
@@ -68,7 +74,8 @@ Operation* getLonger(Operation* operations, int total, int size)
             // Verify if the id are equals
             if (id == op.id)
             {
-                // Verify if the value higher is lower than of the time if so then update the list and put the value higher with the same as the operation
+                // Verify if the value higher is lower than of the time if so then update 
+                //the list and put the value higher with the same as the operation
                 if (higher < op.time)
                 {
                     newOperations[id - 1] = op;
@@ -77,9 +84,11 @@ Operation* getLonger(Operation* operations, int total, int size)
             }
         }
 
+        // Reset variable
         higher = -1;
     }
 
+    // Return the new operations
     return newOperations;
 }
 
@@ -93,13 +102,16 @@ float getAverage(Operation* operations, int total, int id)
     {
         Operation op = operations[i];
 
+        // Verify if the id is equal to the id of operation
         if (id == op.id)
         {
+            // Increase time e count + 1 
             result += op.time;
             count++;
         }
 
     }
 
+    // Return the value by dividing the result from count
     return result / count;
 }
