@@ -5,17 +5,18 @@
 #include "../utils.h"
 
 // Load data of Operation
-bool loadOpData(Operation* operations, int* total) 
+Operation* loadOpData(Operation* op) 
 {
     // Open file
     FILE *f = fopen("db/operations.txt", "r");
     char line[256];
+    int id, idMachine, time;
 
     // Verify if isnt null
     if (f == NULL) 
     {
         printf("Error opening file!\n");
-        return false;
+        return NULL;
     }
 
     // Get the text line by line
@@ -23,26 +24,27 @@ bool loadOpData(Operation* operations, int* total)
     {
         // Remove the ";" and get the values and insert into the list
         char *ptr = strtok(line, ";");
-        operations[*total].id = (int)strtol(ptr, (char **)NULL, 10);
+        id = (int)strtol(ptr, (char **)NULL, 10);
 
         ptr = strtok(NULL, ";");
-        operations[*total].idMachine = (int)strtol(ptr, (char **)NULL, 10);
+        idMachine = (int)strtol(ptr, (char **)NULL, 10);
 
         ptr = strtok(NULL, ";");
-        operations[*total].time = (int)strtol(ptr, (char **)NULL, 10);
+        time = (int)strtol(ptr, (char **)NULL, 10);
 
-        // Increse plus one
-        (*total)++;
+        // Add the Operation
+        op = addOperation(op, id, idMachine, time);
     }
 
     // Close File
     fclose(f);
 
-    return true;
+    // Return the list
+    return op;
 }
 
 // Save data of Object
-bool saveOpData(Operation* operations, int total)
+void saveOpData(Operation* op)
 {
     // Open file
     FILE *f = fopen("db/operations.txt", "w");
@@ -51,17 +53,18 @@ bool saveOpData(Operation* operations, int total)
     if (f == NULL) 
     {
         printf("Error opening file!\n");
-        return false;
     }
 
     // Goes operation a operation and saves it into a line in the file
-    for (int i = 0; i < total; i++) 
+    while (op != NULL)
     {
-        Operation op = operations[i];
-        fprintf(f, "%d;%d;%d\n", op.id, op.idMachine, op.time);
+        fprintf(f, "%d;%d;%d\n", op->id, op->idMachine, op->time);
+        op = op->next;
     }
     
     // Close File
     fclose(f);
-    return true;
+
+    // Free operation
+    free(op);
 }

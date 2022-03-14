@@ -1,46 +1,45 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 
 #include "utils/utils.h"
 
-//! A function that takes two arguments and print the content of the first argument.
-/*!
-    \param operations an Operations point.
-    \param total a constant character pointer.
-*/
-void showAll(Operation* operations, int total)
+// Listagem dos objetos
+void showAll(Operation * obj)
 {
-    printf("\nindex |  id  | idCom | time\n");
-    for (int i = 0; i < total; i++)
-    {
-        Operation op = operations[i];
+    int count = 0;
 
-        printf("%d | %d | %d | %d\n", (i+1), op.id, op.idMachine, op.time);
+    if (obj != NULL)
+    {
+        printf("Index | Id | Machine | Time\n");
+        while (obj != NULL)
+        {
+            printf("%d | %d | %d | %d\n", (count+1), obj->id, obj->idMachine, obj->time);
+            obj = obj->next;
+            count++;
+        }
+    }    
+    else 
+    {
+        printf("Lista vazia");
     }
-    
-    printf("\n\n");
 }
 
 
 int main(int argc, char const *argv[])
 {
     // Variables
-    Operation* operations = malloc(sizeof(Operation)*TAM);
-    Operation* newOperations;
-    int total = 0, totalOp = 0;
-    char op;
+    Operation *op = NULL;
+    char option;
 
-    
     // Load Operations from DB
-    loadOpData(operations, &total);
+    op = loadOpData(op);
 
-    while (op != 'x')
+    while (option != 'x')
     {
         // Variables
         int index, id, idMachine, time;
-        float average;
-        bool result;
 
         system("clear");
 
@@ -55,10 +54,10 @@ int main(int argc, char const *argv[])
 
         // Ask for option to execute
         printf("Option: ");
-        scanf(" %c", &op);
-        op = tolower(op); // Put the result of the user to lower
+        scanf(" %c", &option);
+        option = tolower(option); // Put the result of the user to lower
 
-        switch (op)
+        switch (option)
         {
             case 'a':
 
@@ -77,19 +76,18 @@ int main(int argc, char const *argv[])
 
                 printf("Insert time of Machine: ");
                 scanf("%d", &time);
-
+                
                 // Add a new operation and return True or False
-                result = addOperation(operations, &total, TAM, id, idMachine, time);
-
+                op = addOperation(op, id, idMachine, time);
                 
                 // Print if is Successfull or if there is a problem
-                if (result)
+                if (op != NULL)
                     printf("\nSuccessfully Inserted!!\n\n");
                 else
                     printf("\nSomething went wrong!!\n\n");
 
                 break;
-
+            
             case 'b':
 
                 system("clear");
@@ -99,7 +97,7 @@ int main(int argc, char const *argv[])
                 printf("----------------------------------------------------------------\n\n");
 
                 // Show all operations
-                showAll(operations, total);
+                showAll(op);
 
                 // Ask for index, id, id of Machine and time
                 printf("\nInsert index to update: ");
@@ -115,10 +113,10 @@ int main(int argc, char const *argv[])
                 scanf("%d", &time);
 
                 // Edit the operation and return True or False
-                result = editOperation(operations, (index-1), TAM, id, idMachine, time);
+                op = editOperation(op, index, id, idMachine, time);
 
                 // Print if is Successfull or if there is a problem
-                if (result)
+                if (op)
                     printf("Successfully Updated!!\n\n");
                 else
                     printf("Something went wrong!!\n\n");
@@ -134,17 +132,17 @@ int main(int argc, char const *argv[])
                 printf("-----------------------------------------------------------------\n\n");
 
                 // Show all operations
-                showAll(operations, total);
+                showAll(op);
 
                 // Ask for index
                 printf("\nInsert index to delete: ");
                 scanf("%d", &index);
 
                 // Delete the operation and return True or False
-                result = deleteOperation(operations, &total, (index-1), TAM);
+                op = deleteOperation(op, index);
 
                 // Print if is Successfull or if there is a problem
-                if (result)
+                if (op)
                     printf("Successfully Deleted!!\n\n");
                 else
                     printf("Something went wrong!!\n\n");
@@ -160,7 +158,7 @@ int main(int argc, char const *argv[])
                 printf("----------------------------------------------------------------\n\n");
 
                 // Show all operations
-                showAll(operations, total);
+                showAll(op);
                 break;
 
             case 'e':
@@ -171,18 +169,8 @@ int main(int argc, char const *argv[])
                 printf("|                   See All Operation by Lower Time            |\n");
                 printf("----------------------------------------------------------------\n\n");
 
-                // Get Total Operations and get the lower time
-                totalOp = getTotalOp(operations, total);
-                newOperations = getShorter(operations, total, totalOp);
-
-                // Show Operations by Lower Time
-                if (newOperations != NULL)
-                    showAll(newOperations, totalOp);
-                else
-                    printf("Something went wrong!!\n\n");
-
-                // Free memory
-                free(newOperations);
+                // Get the lower time
+                showShorter(op);
                 
                 break;
 
@@ -194,18 +182,7 @@ int main(int argc, char const *argv[])
                 printf("|                   See All Operation by Higher Time            |\n");
                 printf("----------------------------------------------------------------\n\n");
 
-                // Get Total Operations and get the higher time
-                totalOp = getTotalOp(operations, total);
-                newOperations = getLonger(operations, total, totalOp);
-
-                // Show Operations by Higher Time
-                if (newOperations != NULL)
-                    showAll(newOperations, totalOp);
-                else
-                    printf("Something went wrong!!\n\n");
-
-                // Free memory
-                free(newOperations);
+                showLonger(op);
                     
                 break;
 
@@ -217,17 +194,8 @@ int main(int argc, char const *argv[])
                 printf("|                   See All Operation by Average Time            |\n");
                 printf("----------------------------------------------------------------\n\n");
 
-                // Get Total Operations
-                totalOp = getTotalOp(operations, total);                
-
-                // Show Operations
-                for (int i = 0; i < totalOp; i++)
-                {
-                    // Get Average by Operation
-                    average = getAverage(operations, total, (i+1));
-
-                    printf("Average: %d - %.2f\n", (i+1), average);
-                }
+                // Get Average by Operation
+                showAverage(op);
 
                 printf("\n\n");
                     
@@ -235,7 +203,7 @@ int main(int argc, char const *argv[])
 
             case 'x':
                 // Save Operations to DB
-                saveOpData(operations, total);
+                saveOpData(op);
 
                 printf("See you next time!\n\n");  
                 break;
@@ -244,7 +212,7 @@ int main(int argc, char const *argv[])
                 break;
         }
 
-        if (op != 'x') {
+        if (option != 'x') {
             printf("Press [Enter] key to continue.\n");
             while(getchar()!='\n'); // option TWO to clean stdin
             getchar(); // wait for ENTER 

@@ -3,115 +3,116 @@
 
 #include "../utils.h"
 
-// Get the total of operations
-int getTotalOp(Operation* operations, int total)
+// Get the id of Operation on the last Operation
+int getTotalOp(Operation* op)
 {
-    int totalOp = 0;
+    int total = 0;
 
-    for (int i = 0; i < total; i++)
+    while (op != NULL)
     {
-        Operation op = operations[i];
+        if (total < op->id)
+            total = op->id;
 
-        // Verify if the varaible totalOp is lower then the id of operations
-        if (totalOp < op.id)
-            totalOp = op.id; // Update the variable
+        op = op->next;
     }
 
-    // Return the id
-    return totalOp;
+    return total;
 }
 
 // Get the lower timer to complete a job and return the list for each operation
-Operation* getShorter(Operation* operations, int total, int size)
+void showShorter(Operation* op) 
 {
-    Operation* newOperations = malloc(sizeof(Operation)*size);
-    int lower = 999;
+    Operation *aux = malloc(sizeof(Operation));
+    Operation *temp = malloc(sizeof(Operation));
+    int totalOp = getTotalOp(op), lower = 999;
 
-    for (int i = 0; i < size; i++)
+    if (op != NULL)
     {
-        int id = (i+1);
-
-        for (int j = 0; j < total; j++)
+        printf("Id | IdMachine | Time\n");
+        for (int i = 0; i < totalOp; i++)
         {
-            Operation op = operations[j];
+            aux = op;
 
-            // Verify if the id are equals
-            if (id == op.id)
+            while (aux != NULL)
             {
-                // Verify if the value lower is higher than of the time if so then update 
-                //the list and put the value lower with the same as the operation
-                if (lower > op.time)
+                if ((i+1) == aux->id && lower > aux->time)
                 {
-                    newOperations[id - 1] = op;
-                    lower = op.time;
-                } 
+                    temp = aux;
+                    lower = aux->time;
+                }
+                aux = aux->next; 
             }
+
+            if (lower != 999)        
+                printf("%d | %d | %d\n", temp->id, temp->idMachine, temp->time);
+
+            lower = 999;
         }
-
-        // Reset variable
-        lower = 999;
     }
-
-    // Return the new variable
-    return newOperations;
 }
 
 // Get the high timer to complete a job and return the list for each operation
-Operation* getLonger(Operation* operations, int total, int size)
+void showLonger(Operation* op) 
 {
-    Operation* newOperations = malloc(sizeof(Operation)*size);
-    int higher = -1;
-    int id = 0;
+    Operation *aux = malloc(sizeof(Operation));
+    Operation *temp = malloc(sizeof(Operation));
+    int totalOp = getTotalOp(op), higher = -1;
 
-    for (int i = 0; i < size; i++)
+    if (op != NULL)
     {
-        id = (i+1);
-
-        for (int j = 0; j < total; j++)
+        printf("Id | IdMachine | Time\n");
+        for (int i = 0; i < totalOp; i++)
         {
-            Operation op = operations[j];
+            aux = op;
 
-            // Verify if the id are equals
-            if (id == op.id)
+            while (aux != NULL)
             {
-                // Verify if the value higher is lower than of the time if so then update 
-                //the list and put the value higher with the same as the operation
-                if (higher < op.time)
+                if ((i+1) == aux->id && higher < aux->time)
                 {
-                    newOperations[id - 1] = op;
-                    higher = op.time;
-                } 
+                    temp = aux;
+                    higher = aux->time;
+                }
+                aux = aux->next; 
             }
+
+            if (higher != -1)        
+                printf("%d | %d | %d\n", temp->id, temp->idMachine, temp->time);
+
+            higher = -1;
         }
-
-        // Reset variable
-        higher = -1;
     }
-
-    // Return the new operations
-    return newOperations;
 }
 
-// Get the average timer to complete a job considering all the alternatives and return the list for each operation
-float getAverage(Operation* operations, int total, int id)
+// Get the average timer to complete a job considering 
+//all the alternatives and return the list for each operation
+void showAverage(Operation* op) 
 {
+    Operation *aux = malloc(sizeof(Operation));
+    int totalOp = getTotalOp(op), count = 0;
     float result = 0;
-    int count = 0;
 
-    for (int i = 0; i < total; i++)
+    if (op != NULL)
     {
-        Operation op = operations[i];
-
-        // Verify if the id is equal to the id of operation
-        if (id == op.id)
+        printf("Id | Time\n");
+        for (int i = 0; i < totalOp; i++)
         {
-            // Increase time e count + 1 
-            result += op.time;
-            count++;
+            aux = op;
+
+            while (aux != NULL)
+            {
+                if ((i+1) == aux->id)
+                {
+                    result += aux->time;
+                    count++;
+                }
+                aux = aux->next; 
+            }
+
+            if (count != 0 && result != 0)
+                printf("%d | %.2f\n", (i+1), result/count);
+
+            count = 0;
+            result = 0;
         }
-
     }
-
-    // Return the value by dividing the result from count
-    return result / count;
 }
