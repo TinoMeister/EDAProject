@@ -44,3 +44,10 @@ Operation* editOperation(Operation* op, int index, int id, int idMachine, int ti
  * @return Operation* return the operation.
  */
 Operation* deleteOperation(Operation* op, int index);
+
+/**
+ * @brief Clean the list Operation.
+ * Use to free all the Operations from the memory.
+ * @param op The list of operations.
+ */
+void clean(Operation* op);

@@ -3,7 +3,7 @@
 
 #include "../utils.h"
 
-// Get the id of Operation on the last Operation
+// Get the highets id of Operation
 int getTotalOp(Operation* op)
 {
     int total = 0;

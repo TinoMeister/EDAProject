@@ -30,7 +30,7 @@ void showAll(Operation * obj)
 int main(int argc, char const *argv[])
 {
     // Variables
-    Operation *op = NULL;
+    Operation *op = NULL, *result;
     char option;
 
     // Load Operations from DB
@@ -78,11 +78,14 @@ int main(int argc, char const *argv[])
                 scanf("%d", &time);
                 
                 // Add a new operation and return True or False
-                op = addOperation(op, id, idMachine, time);
+                result = addOperation(op, id, idMachine, time);
                 
                 // Print if is Successfull or if there is a problem
-                if (op != NULL)
+                if (result != NULL)
+                {
+                    op = result;
                     printf("\nSuccessfully Inserted!!\n\n");
+                }
                 else
                     printf("\nSomething went wrong!!\n\n");
 
@@ -112,12 +115,13 @@ int main(int argc, char const *argv[])
                 printf("Insert time of Machine to change: ");
                 scanf("%d", &time);
 
-                // Edit the operation and return True or False
-                op = editOperation(op, index, id, idMachine, time);
+                result = editOperation(op, index, id, idMachine, time);                
 
-                // Print if is Successfull or if there is a problem
-                if (op)
+                if (result != NULL)
+                {
+                    op = result;
                     printf("Successfully Updated!!\n\n");
+                }
                 else
                     printf("Something went wrong!!\n\n");
                     
@@ -138,12 +142,13 @@ int main(int argc, char const *argv[])
                 printf("\nInsert index to delete: ");
                 scanf("%d", &index);
 
-                // Delete the operation and return True or False
-                op = deleteOperation(op, index);
+                result = deleteOperation(op, index);
 
-                // Print if is Successfull or if there is a problem
-                if (op)
+                if (result != NULL)
+                {
+                    op = result;
                     printf("Successfully Deleted!!\n\n");
+                }
                 else
                     printf("Something went wrong!!\n\n");
                     
@@ -191,7 +196,7 @@ int main(int argc, char const *argv[])
                 system("clear");
 
                 printf("----------------------------------------------------------------\n");
-                printf("|                   See All Operation by Average Time            |\n");
+                printf("|                 See All Operation by Average Time            |\n");
                 printf("----------------------------------------------------------------\n\n");
 
                 // Get Average by Operation
@@ -204,6 +209,8 @@ int main(int argc, char const *argv[])
             case 'x':
                 // Save Operations to DB
                 saveOpData(op);
+                // Clean List Operation
+                clean(op);
 
                 printf("See you next time!\n\n");  
                 break;

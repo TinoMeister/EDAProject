@@ -3,12 +3,44 @@
 
 #include "operation.h"
 
+// Get the total of Operations in the list
+int getTotal(Operation* op)
+{
+    int total = 1;
+
+    while (op != NULL)
+    {
+        total += 1;
+        op = op->next;
+    }
+    
+
+    return total;
+}
+
+// Verify if the id Machine alredy exists in Operation
+bool verifyOperation(Operation* op, int id, int idMachine)
+{
+    bool exists = false;
+
+    while (op != NULL)
+    {
+        if (op->id == id && op->idMachine == idMachine)
+            exists = true;
+
+        op = op->next;
+    }
+    
+    return exists;
+}
+
 // Add new operation
 Operation* addOperation(Operation* op, int id, int idMachine, int time)
 {
     Operation *aux, *newOp = malloc(sizeof(Operation));
+    bool exists = verifyOperation(op, id, idMachine);
 
-    if (newOp != NULL)
+    if (newOp != NULL && !exists)
     {
         newOp->id = id;
         newOp->idMachine = idMachine;
@@ -37,25 +69,24 @@ Operation* addOperation(Operation* op, int id, int idMachine, int time)
             // The next operation gets the the pointer from the new operation
             aux->next = newOp;
         }
+
+        return op;
     }
-    
-    return op;
-    
+    else
+        return NULL;
 }
 
 // Edit the operation
 Operation* editOperation(Operation* op, int index, int id, int idMachine, int time)
 {
     Operation *temp = op;
+    int total = getTotal(op);
+    bool exists = verifyOperation(op, id, idMachine);
 
-    if (op != NULL)
+    if (op != NULL && index > 0 && index <= total && !exists)
     {
-        for (int i = 0; i < (index-1); i++)
-            temp = temp->next;
-
-        temp->id = id;
-        temp->idMachine = idMachine;
-        temp->time = time;
+        op = deleteOperation(op, index);
+        op = addOperation(op, id, idMachine, time);
 
         return op;
     } 
@@ -66,8 +97,9 @@ Operation* editOperation(Operation* op, int index, int id, int idMachine, int ti
 Operation* deleteOperation(Operation* op, int index)
 {
     Operation *temp = op, *aux;
+    int total = getTotal(op);
 
-    if (op != NULL)
+    if (op != NULL && index > 0 && index <= total)
     {
         if (index == 1) 
         {
@@ -93,4 +125,20 @@ Operation* deleteOperation(Operation* op, int index)
         return op;
     }
     else return NULL;    
+}
+
+// Clean the list Operation.
+void clean(Operation* op)
+{
+    Operation *aux;
+
+    if (op != NULL)
+    {
+        while (op != NULL)
+        {
+            aux = op;
+            op = op->next;
+            free(aux);
+        }
+    }
 }
