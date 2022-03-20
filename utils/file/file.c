@@ -64,7 +64,4 @@ void saveOpData(Operation* op)
     
     // Close File
     fclose(f);
-
-    // Free operation
-    free(op);
 }
