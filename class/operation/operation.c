@@ -72,8 +72,8 @@ Operation* addOperation(Operation* op, int id, int idMachine, int time)
 
         return op;
     }
-    else
-        return NULL;
+    
+    return NULL;
 }
 
 // Edit the operation
@@ -85,12 +85,19 @@ Operation* editOperation(Operation* op, int index, int id, int idMachine, int ti
 
     if (op != NULL && index > 0 && index <= total && !exists)
     {
-        op = deleteOperation(op, index);
-        op = addOperation(op, id, idMachine, time);
+        // Add like a new Operation
+        temp = addOperation(temp, id, idMachine, time);
 
-        return op;
+        if (temp != NULL)
+        {
+            // Delete de previous Operation
+            temp = deleteOperation(temp, (index+1));
+
+            return temp;
+        }
     } 
-    else return NULL;
+    
+    return NULL;
 }
 
 // Delete the operation
@@ -124,7 +131,8 @@ Operation* deleteOperation(Operation* op, int index)
 
         return op;
     }
-    else return NULL;    
+    
+    return NULL;    
 }
 
 // Clean the list Operation.
