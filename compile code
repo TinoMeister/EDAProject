@@ -1,0 +1,1 @@
+gcc main.c class/operation/operation.c utils/file/file.c utils/func/func.c
