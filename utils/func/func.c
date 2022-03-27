@@ -19,100 +19,66 @@ int getTotalOp(Operation* op)
     return total;
 }
 
-// Get the lower timer to complete a job and return the list for each operation
-void showShorter(Operation* op) 
+// Get the lower timer to complete a operation
+Operation* getShorter(Operation* op, int id) 
 {
-    Operation *aux = malloc(sizeof(Operation));
-    Operation *temp = malloc(sizeof(Operation));
-    int totalOp = getTotalOp(op), lower = 999;
+    Operation *lower = NULL;
 
     if (op != NULL)
     {
-        printf("Id | IdMachine | Time\n");
-        for (int i = 0; i < totalOp; i++)
+        while (op != NULL)
         {
-            aux = op;
+            if (id == op->id && (lower == NULL || lower->time > op->time))
+                lower = op;
 
-            while (aux != NULL)
-            {
-                if ((i+1) == aux->id && lower > aux->time)
-                {
-                    temp = aux;
-                    lower = aux->time;
-                }
-                aux = aux->next; 
-            }
-
-            if (lower != 999)        
-                printf("%d | %d | %d\n", temp->id, temp->idMachine, temp->time);
-
-            lower = 999;
+            op = op->next; 
         }
+
+        return lower;
     }
+
+    return NULL;
 }
 
-// Get the high timer to complete a job and return the list for each operation
-void showLonger(Operation* op) 
+// Get the higher timer to complete a operation
+Operation* getLonger(Operation* op, int id)
 {
-    Operation *aux = malloc(sizeof(Operation));
-    Operation *temp = malloc(sizeof(Operation));
-    int totalOp = getTotalOp(op), higher = -1;
+    Operation *higher = NULL;
 
     if (op != NULL)
     {
-        printf("Id | IdMachine | Time\n");
-        for (int i = 0; i < totalOp; i++)
+        while (op != NULL)
         {
-            aux = op;
+            if (id == op->id && (higher == NULL || higher->time < op->time))
+                higher = op;
 
-            while (aux != NULL)
-            {
-                if ((i+1) == aux->id && higher < aux->time)
-                {
-                    temp = aux;
-                    higher = aux->time;
-                }
-                aux = aux->next; 
-            }
-
-            if (higher != -1)        
-                printf("%d | %d | %d\n", temp->id, temp->idMachine, temp->time);
-
-            higher = -1;
+            op = op->next; 
         }
+
+        return higher;
     }
+
+    return NULL;
 }
 
-// Get the average timer to complete a job considering 
-//all the alternatives and return the list for each operation
-void showAverage(Operation* op) 
+// Get the average timer to complete a operation
+float getAverage(Operation* op, int id) 
 {
-    Operation *aux = malloc(sizeof(Operation));
-    int totalOp = getTotalOp(op), count = 0;
-    float result = 0;
+    int count = 0, total = 0;
 
-    if (op != NULL)
+    while (op != NULL)
     {
-        printf("Id | Time\n");
-        for (int i = 0; i < totalOp; i++)
+        if (id == op->id)
         {
-            aux = op;
-
-            while (aux != NULL)
-            {
-                if ((i+1) == aux->id)
-                {
-                    result += aux->time;
-                    count++;
-                }
-                aux = aux->next; 
-            }
-
-            if (count != 0 && result != 0)
-                printf("%d | %.2f\n", (i+1), result/count);
-
-            count = 0;
-            result = 0;
+            total += op->time;
+            count++;
         }
+
+        op = op->next; 
     }
+
+    if (count == 0)
+        return -1;
+    else
+        return total / count;
 }

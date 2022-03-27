@@ -24,22 +24,28 @@ void saveOpData(Operation* op);
 int getTotalOp(Operation* op);
 
 /**
- * @brief Get the Shorter Time.
- * Get the lower timer to complete a job and return the list for each operation.
- * @param operations A list of operations.
+ * @brief Get the Shorter object
+ * Get the lower timer to complete a Operation.
+ * @param op A list of operations.
+ * @param id The id of the Operation.
+ * @return Operation* return the Operation with the machine with lower time.
  */
-void showShorter(Operation* op);
+Operation* getShorter(Operation* op, int id) ;
 
 /**
- * @brief Get the Longer Time
- * Get the high timer to complete a job and return the list for each operation.
- * @param operations A list of operations.
+ * @brief Get the Longer object
+ * Get the high timer to complete a Operation.
+ * @param op A list of operations.
+ * @param id The id of the Operation.
+ * @return Operation* return the Operation with the machine with higher time.
  */
-void showLonger(Operation* op);
+Operation* getLonger(Operation* op, int id);
 
 /**
- * @brief Get the Average Time
- * Get the average timer to complete a job considering all the alternatives and return the list for each operation.
- * @param operations A list of operations.
+ * @brief Get the Average object
+ * Get the average timer to complete a operation.
+ * @param op A list of operations.
+ * @param id The id of the Operation.
+ * @return float return the average or -1 if the id doesnt exists.
  */
-void showAverage(Operation* op);
+float getAverage(Operation* op, int id);

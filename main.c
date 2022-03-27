@@ -5,7 +5,7 @@
 
 #include "utils/utils.h"
 
-// Listagem dos objetos
+// Show All Operations
 void showAll(Operation * obj)
 {
     int count = 0;
@@ -23,6 +23,67 @@ void showAll(Operation * obj)
     else 
     {
         printf("Lista vazia");
+    }
+}
+
+// Show Operations with lower time
+void showShorter(Operation* op)
+{
+    Operation *lower = malloc(sizeof(Operation));
+    int totalOp = getTotalOp(op);
+
+    if (op != NULL)
+    {
+        printf("Id | IdMachine | Time\n");
+        for (int i = 1; i <= totalOp; i++)
+        {
+            lower = getShorter(op, i);
+
+            if (lower != NULL)
+                printf("%d | %d | %d\n", lower->id, lower->idMachine, lower->time);
+            
+            lower = NULL;
+        }
+    }
+}
+
+// Show Operations with higher time
+void showLonger(Operation* op)
+{
+    Operation *higher = malloc(sizeof(Operation));
+    int totalOp = getTotalOp(op);
+
+    if (op != NULL)
+    {
+        printf("Id | IdMachine | Time\n");
+        for (int i = 1; i <= totalOp; i++)
+        {
+            higher = getLonger(op, i);
+
+            if (higher != NULL)
+                printf("%d | %d | %d\n", higher->id, higher->idMachine, higher->time);
+            
+            higher = NULL;
+        }
+    }
+}
+
+// Show Operations average time
+void showAverage(Operation* op)
+{
+    int totalOp = getTotalOp(op);
+    float result = 0;
+
+    if (op != NULL)
+    {
+        printf("Id | Time\n");
+        for (int i = 1; i <= totalOp; i++)
+        {
+            result = getAverage(op, i);
+
+            if (result > -1)
+                printf("%d | %.2f\n", i, result);
+        }
     }
 }
 
@@ -228,123 +289,3 @@ int main(int argc, char const *argv[])
     
     return 0;
 }
-
-/*
-int main2(int argc, char const *argv[]) 
-{
-    int size = 20;
-    Operation* operations = malloc(sizeof(Operation)*size);
-    int total = 0;
-
-    // Load Operations from DB
-    loadOpData(operations, &total);
-
-    // Show operations
-    printf("After Loading:\n");
-    for (int i = 0; i < total; i++)
-    {
-        Operation op = operations[i];
-        printf("%d - %d - %d\n", op.id, op.idMachine, op.time);
-    }
-    printf("\n\n");
-
-    // Get Lower 
-    int n = operations[total-1].id;
-    Operation* newOperations;
-    newOperations = getShorter(operations, total, n);
-
-    // Show operations
-    printf("\nAfter getShorter:\n");
-    for (int i = 0; i < n; i++)
-    {
-        Operation op = newOperations[i];
-        printf("%d - %d - %d\n", op.id, op.idMachine, op.time);
-    }
-
-    free(newOperations);
-
-
-    // Get Higher
-    newOperations = getLonger(operations, total, n);
-
-    // Show operations
-    printf("\nAfter getLonger:\n");
-    for (int i = 0; i < n; i++)
-    {
-        Operation op = newOperations[i];
-        printf("%d - %d - %d\n", op.id, op.idMachine, op.time);
-    }
-
-    free(newOperations);
-
-
-    // Get Average
-    printf("\nAfter Average:\n");
-    for (int i = 0; i < n; i++)
-    {
-        float average = getAverage(operations, total, (i+1));
-
-        printf("Average: %d - %.2f\n", (i+1), average);
-    }
-    
-
-
-    
-    /*
-    // Add Operations
-    addOperation(operations, &total, size, 1, 1, 4);
-    addOperation(operations, &total, size, 1, 3, 5);
-    addOperation(operations, &total, size, 2, 2, 4);
-    addOperation(operations, &total, size, 2, 4, 5);
-    addOperation(operations, &total, size, 3, 3, 5);
-    addOperation(operations, &total, size, 3, 5, 6);
-    addOperation(operations, &total, size, 4, 4, 5);
-    addOperation(operations, &total, size, 4, 5, 5);
-    addOperation(operations, &total, size, 4, 6, 4);
-    addOperation(operations, &total, size, 4, 7, 5);
-    addOperation(operations, &total, size, 4, 8, 9);
-
-    // Show operations
-    printf("After Adding:\n");
-    for (int i = 0; i < total; i++)
-    {
-        Operation op = operations[i];
-        printf("%d - %d - %d\n", op.id, op.idMachine, op.time);
-    }
-    
-    // Edit Operations
-    editOperation(operations, 1, size, 1, 1, 2);
-    editOperation(operations, 88, size, 2, 1, 2);
-    editOperation(operations, 3, size, 3, 1, 2);
-
-    // Show operations
-    printf("\nAfter Editing:\n");
-    for (int i = 0; i < total; i++)
-    {
-        Operation op = operations[i];
-        printf("%d - %d - %d\n", op.id, op.idMachine, op.time);
-    }
-
-    
-    // Delete Operations
-    deleteOperation(operations, &total, 1, size);
-    deleteOperation(operations, &total, 20, size);
-    deleteOperation(operations, &total, 3, size);
-
-
-    // Show operations
-    printf("\nAfter Removing:\n");
-    for (int i = 0; i < total; i++)
-    {
-        Operation op = operations[i];
-        printf("%d - %d - %d\n", op.id, op.idMachine, op.time);
-    }
-
-    
-    // Save Operations to DB
-    saveOpData(operations, total);
-    
-
-    return 0;
-}
-*/
