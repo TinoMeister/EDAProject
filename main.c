@@ -30,7 +30,7 @@ void showAll(Operation * obj)
 void showShorter(Operation* op)
 {
     Operation *lower = malloc(sizeof(Operation));
-    int totalOp = getTotalOp(op);
+    int totalOp = getTotalOp(op), count = 0;
 
     if (op != NULL)
     {
@@ -40,10 +40,15 @@ void showShorter(Operation* op)
             lower = getShorter(op, i);
 
             if (lower != NULL)
+            {
                 printf("%d | %d | %d\n", lower->id, lower->idMachine, lower->time);
+                count += lower->time;
+            }
             
             lower = NULL;
         }
+
+        printf("Total: %d\n", count);
     }
 }
 
@@ -51,7 +56,7 @@ void showShorter(Operation* op)
 void showLonger(Operation* op)
 {
     Operation *higher = malloc(sizeof(Operation));
-    int totalOp = getTotalOp(op);
+    int totalOp = getTotalOp(op), count = 0;
 
     if (op != NULL)
     {
@@ -61,10 +66,15 @@ void showLonger(Operation* op)
             higher = getLonger(op, i);
 
             if (higher != NULL)
+            {
                 printf("%d | %d | %d\n", higher->id, higher->idMachine, higher->time);
+                count += higher->time;
+            }
             
             higher = NULL;
         }
+
+        printf("Total: %d\n", count);
     }
 }
 
@@ -72,7 +82,7 @@ void showLonger(Operation* op)
 void showAverage(Operation* op)
 {
     int totalOp = getTotalOp(op);
-    float result = 0;
+    float result = 0, count = 0;
 
     if (op != NULL)
     {
@@ -82,8 +92,13 @@ void showAverage(Operation* op)
             result = getAverage(op, i);
 
             if (result > -1)
+            {
                 printf("%d | %.2f\n", i, result);
+                count += result;
+            }
         }
+
+        printf("Total: %.2f\n", count);
     }
 }
 
