@@ -80,18 +80,29 @@ Operation* addOperation(Operation* op, int id, int idMachine, int time)
 Operation* editOperation(Operation* op, int index, int id, int idMachine, int time)
 {
     Operation *temp = op;
-    int total = getSizeOp(op);
-    bool exists = verifyOperation(op, id, idMachine);
+    int total = getSizeOp(op), count = 1;
 
     // If the list is null or of the index is not bettween 1 and the total 
-    // of operations or if the opration alredy exists then return NULL
-    if (!op || index <= 0 && index > total || exists) return NULL;
+    // of operations
+    if (!op || index <= 0 && index > total) return NULL;
 
-    // Delete Operation
-    temp = deleteOperation(temp, index);
+    // Get the operation representing the index
+    while (temp && count < index)
+    {
+        count++;
+        temp = temp->next;
+    }
 
-    // If result is not NULL then add the Operation
-    if (temp) temp = addOperation(temp, id, idMachine, time);
+    // If the id and id Machine are still equal to the element then just update the time
+    if (temp->id == id && temp->idMachine == idMachine) temp->time = time;
+    else
+    {
+        // Add the Operation
+        temp = addOperation(op, id, idMachine, time);    
+
+        // If result is not NULL then delete the Operation
+        if (temp) temp = deleteOperation(op, index);
+    }
 
     // Return the new list of Operaion
     return temp;
