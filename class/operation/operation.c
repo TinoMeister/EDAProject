@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "operation.h"
@@ -94,14 +95,20 @@ Operation* editOperation(Operation* op, int index, int id, int idMachine, int ti
     }
 
     // If the id and id Machine are still equal to the element then just update the time
-    if (temp->id == id && temp->idMachine == idMachine) temp->time = time;
+    if (temp->id == id && temp->idMachine == idMachine)
+    {
+        temp->time = time;
+        
+        // Return the new list of Operaion
+        return op;
+    }
     else
     {
-        // Add the Operation
-        temp = addOperation(op, id, idMachine, time);    
-
-        // If result is not NULL then delete the Operation
-        if (temp) temp = deleteOperation(op, index);
+        // Delete the Operation
+        temp = deleteOperation(op, index);        
+        
+        // If result is not NULL then add a new Operation
+        if (temp) temp = addOperation(op, id, idMachine, time);
     }
 
     // Return the new list of Operaion
